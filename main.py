@@ -1,9 +1,24 @@
-import random
+# Install Courier SDK: pip install trycourier
+from trycourier import Courier
+import os
 
-out = ""
-words = open("names.txt").read().split("\n")
+client = Courier(auth_token=os.environ.get("AUTH_TOKEN"))
 
-for i in range(1000):
-  out += random.choice(words)
+emails = open("emails.txt").read().split("\n")
 
-print(out)
+# replace templateId with the Id of any template to change the email
+templateId = "GR2X59V1JRMJTFJJPCR01C4PRRG2"
+
+for email in emails:
+  resp = client.send_message(
+    message={
+      "to": {
+        "email": email,
+      },
+      "template": templateId,
+      "data": {
+      },
+    }
+  )
+
+print(resp['requestId'])
